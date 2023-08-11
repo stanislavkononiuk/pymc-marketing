@@ -49,7 +49,16 @@ def batched_convolution(x, w, axis: int = 0):
     shape = (*x.shape, w.shape[-1])
     # Make a tensor with x at the different time lags needed for the convolution
     padded_x = pt.zeros(shape, dtype=x.dtype)
-    
+    if l_max is not None:
+        for i in range(l_max):
+            padded_x = pt.set_subtensor(
+                padded_x[..., i:x_time, i], x[..., : x_time - i]
+            )
+    else:  # pragma: no cover
+        raise NotImplementedError(
+            "At the moment, convolving with weight arrays that don't have a concrete shape "
+            "at compile time is not supported."
+        )
     # The convolution is treated as an element-wise product, that then gets reduced
     # along the dimension that represents the convolution time lags
     conv = pt.sum(padded_x * w[..., None, :], axis=-1)
