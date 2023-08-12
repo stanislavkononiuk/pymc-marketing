@@ -40,22 +40,7 @@ class MaxAbsScaleTarget:
         return data
 
 
-class MaxAbsScaleChannels:
-    channel_columns: Union[List[str], Tuple[str]]
 
-    @preprocessing_method_X
-    def max_abs_scale_channel_data(self, data: pd.DataFrame) -> pd.DataFrame:
-        channel_data: Union[
-            pd.DataFrame,
-            pd.Series[Any],
-        ] = data[self.channel_columns]
-        transformers = [("scaler", MaxAbsScaler())]
-        pipeline: Pipeline = Pipeline(steps=transformers)
-        self.channel_transformer: Pipeline = pipeline.fit(X=channel_data.to_numpy())
-        data[self.channel_columns] = self.channel_transformer.transform(
-            channel_data.to_numpy()
-        )
-        return data
 
 
 class StandardizeControls:
