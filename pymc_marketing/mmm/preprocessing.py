@@ -13,11 +13,7 @@ __all__ = [
 ]
 
 
-def preprocessing_method_X(method: Callable) -> Callable:
-    if not hasattr(method, "_tags"):
-        method._tags = {}  # type: ignore
-    method._tags["preprocessing_X"] = True  # type: ignore
-    return method
+
 
 
 def preprocessing_method_y(method: Callable) -> Callable:
